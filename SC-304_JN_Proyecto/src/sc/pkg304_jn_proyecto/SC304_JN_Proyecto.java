@@ -7,58 +7,45 @@ import javax.swing.JOptionPane;
  *
  * 
  * Poner aca nombres
- * @autores  Oscar Solis Barrientos,
+ * @autores  Oscar Solis Barrientos, Jose Antonio Zeledon Sanchez
  * 
  * 
  */
 public class SC304_JN_Proyecto {
     
-    public static int cantidad = 0;                                 // Esta variable almacena cantidad de clientes creados, almacena los returns
+    public static int cantidad = 0;                                 
+    private static ConfigurarModulo0 modulo0 = new ConfigurarModulo0();
 
-    /**
-     
-     */
     public static void main(String[] args) {
-        // TODO code application logic here
         
+        modulo0.ejecutarConfiguracionSilenciosa();
         IniciarPrograma();
         
     }
     
     public static void IniciarPrograma() {
-        int veces;
         int valorBTN;
 
         valorBTN = JOptionPane.showOptionDialog(null, "----------------[  MENÚ INICIO DE BANCO  ]----------------\n¡Bienvenido al Sistema del Banco!\n¿Qué desea hacer?", "Seleccione",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, new String[]{"CONFIGURACIÓN", "ATENCIÓN DE CLIENTES", "SALIR"}, "ATENCIÓN DE CLIENTES");
-        switch (valorBTN) {                         //Switch encargado de evaluar el menu principal
-            case 0:                                 //En el caso que se ingrese el menu banco se llama al metodo encargado
-                veces=1;
-                
-                if (veces > 1) {
-                    JOptionPane.showMessageDialog(null, "Ya este proceso fue hecho");
-                    IniciarPrograma();
-                            
-                }else if (veces == 1){
-                    JOptionPane.showMessageDialog(null, "Mostrando modulo configuracion");
-                    veces = +veces;
-                }
-                
+        
+        switch (valorBTN) {                         
+            case 0:                                 
+                modulo0.ejecutarConfiguracionManual();
                 IniciarPrograma();
                 break;
+                
             case 1:
                 MenuAtencionCliente();
                 break;
 
             case 2:
-                JOptionPane.showMessageDialog(null, "Gracias por usar el Sistema del Banco");  //En caso de que se seleccione salir se da un mensaje de despedida y termina el programa
-                
+                JOptionPane.showMessageDialog(null, "Gracias por usar el Sistema del Banco");  
                 break;
+                
             default:
                 JOptionPane.showMessageDialog(null, "Finalizando proceso....");
-
         }
-
     }
     
     public static void MenuAtencionCliente() {
@@ -66,52 +53,40 @@ public class SC304_JN_Proyecto {
 
         do {
             String respuesta = (JOptionPane.showInputDialog("""         
-                                                                _______MENÚ ATENCIÓN DE CLIENTE_______
-                                                                1. Creación de tiquetes 
-                                                                2. Atención de tiquetes
-                                                                3. Llenado de Colas
-                                                                4. Reportes
-                                                                5. Salir 
-                                                                
-                                                                """));
+                                _______MENÚ ATENCIÓN DE CLIENTE_______
+                                1. Creación de tiquetes\s
+                                2. Atención de tiquetes
+                                3. Llenado de Colas
+                                4. Reportes
+                                5. Salir\s
+                               \s"""));
 
-            if (respuesta == null) {                // Se evalua si no se ingreso un dato al menu, si no es asi se vuelve a iniciar el metodo principal + retrun para evitar enciclamiento y que no se caiga el codigo
+            if (respuesta == null) {                
                 IniciarPrograma();
                 return;
             }
-            opt = Integer.parseInt(respuesta);      // Se transoforma la variable respuesta a integer para poder ser interpretada por el swtich, se almacena en "opt"
+            opt = Integer.parseInt(respuesta);      
             
-            //se usa el metodo Switch para escoger una opcion 
             switch (opt) {
-                case 1: //Creacion de tiquetes
+                case 1: 
                     JOptionPane.showMessageDialog(null, "Mostrar las opciones de Creacion de tiquetes");
-                
                     break;
-                case 2: //Atencion de tiquetes 
+                case 2: 
                     JOptionPane.showMessageDialog(null, "Mostrar las opciones de Atencion de tiquetes");
-                    
-
                     break;
-                case 3: //Llenado de colas
+                case 3: 
                     JOptionPane.showMessageDialog(null, "Mostrar las opciones de Llenado de colas");
-                    
-
                     break;
-                case 4: //Reportes
+                case 4: 
                     JOptionPane.showMessageDialog(null, "Mostrando Reportes del sistema");
-
                     break;
-                case 5: //Salir
+                case 5: 
                     IniciarPrograma();
-
                     break;
                 default:
-                    JOptionPane.showMessageDialog(null, "Ingrese un número válido");    // Si no se ingreso opciones validas se pide al usuario que se ingrese una valida y se vuelve a evaluar 
-                }    
+                    JOptionPane.showMessageDialog(null, "Ingrese un número válido");    
+            }    
             
-        } while (opt!=5);
-        
-        }
-    
-
+        } while (opt != 5);
+    }
 }
