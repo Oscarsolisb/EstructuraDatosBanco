@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
  *
  * 
  * Poner aca nombres
- * @autores  Oscar Solis Barrientos, Jose Antonio Zeledon Sanchez
+ * @autores  Oscar Solis Barrientos, Jose Antonio Zeledon Sanchez, Javier Mora Jimenez
  * 
  * 
  */
@@ -15,6 +15,7 @@ public class SC304_JN_Proyecto {
     
     public static int cantidad = 0;                                 
     private static ConfigurarModulo0 modulo0 = new ConfigurarModulo0();
+    private static PruebaConceptoF pruebaFecha = new PruebaConceptoF();
 
     public static void main(String[] args) {
         
@@ -27,7 +28,7 @@ public class SC304_JN_Proyecto {
         int valorBTN;
 
         valorBTN = JOptionPane.showOptionDialog(null, "----------------[  MENÚ INICIO DE BANCO  ]----------------\n¡Bienvenido al Sistema del Banco!\n¿Qué desea hacer?", "Seleccione",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, new String[]{"CONFIGURACIÓN", "ATENCIÓN DE CLIENTES", "SALIR"}, "ATENCIÓN DE CLIENTES");
+        JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, new String[]{"CONFIGURACIÓN", "PRUEBA DE CONCEPTO", "ATENCIÓN DE CLIENTES", "SALIR"}, "ATENCIÓN DE CLIENTES");
         
         switch (valorBTN) {                         
             case 0:                                 
