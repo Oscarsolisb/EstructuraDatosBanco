@@ -18,7 +18,7 @@ public class SC304_JN_Proyecto {
     private static PruebaConceptoF pruebaFecha = new PruebaConceptoF();
 
     public static void main(String[] args) {
-        
+        GestionTiquete Gestion = new GestionTiquete();
         modulo0.ejecutarConfiguracionSilenciosa();
         IniciarPrograma();
         
