@@ -3,6 +3,7 @@ package sc.pkg304_jn_proyecto;
 
 import javax.swing.JOptionPane;
 
+
 /**
  *
  * @autores  Oscar Solis Barrientos, Jose Antonio Zeledon Sanchez, Javier Mora Jimenez
@@ -16,7 +17,7 @@ public class GestionTiquete {
     boolean caja2Ocupada = false;
     boolean caja3Ocupada = false;
 
-    public void crearTiquete() {
+    public void creartiquete() {
 
         
         String nombre = JOptionPane.showInputDialog("Digite el nombre:");
@@ -41,13 +42,13 @@ public class GestionTiquete {
 
         switch (optTramite) {
             case 1:
-                tramite = Tramite.Depositos;
+                tramite = Tramite.DEPOSITOS;
                 break;
             case 2:
-                tramite = Tramite.Retiros;
+                tramite = Tramite.RETIROS;
                 break;
             case 3:
-                tramite = Tramite.CambiodeDivisas;
+                tramite = Tramite.CAMBIO_DE_DIVISAS;
                 break;
             default:
                 JOptionPane.showMessageDialog(null, "Opción inválida");
@@ -79,13 +80,17 @@ public class GestionTiquete {
                 return;
         }
         Cliente nuevo = new Cliente(nombre, id, edad, tramite, tipo);
+        asignarCaja(nuevo, tipo);
+        
 
+        
+    }
+    
+    public void asignarCaja(Cliente nuevo, Tipo tipo) {
         switch (tipo) {
-
             case P:
                 int personas1 = preferencial.cantidadPersonas();
                 preferencial.encolar(nuevo);
-
                 if (personas1 == 0 && !caja1Ocupada) {
                     JOptionPane.showMessageDialog(null,
                             "Caja 1\nEs su turno de atención.");
@@ -99,7 +104,6 @@ public class GestionTiquete {
             case A:
                 int personas2 = unTramite.cantidadPersonas();
                 unTramite.encolar(nuevo);
-
                 if (personas2 == 0 && !caja2Ocupada) {
                     JOptionPane.showMessageDialog(null,
                             "Caja 2\nEs su turno de atención.");
@@ -113,7 +117,6 @@ public class GestionTiquete {
             case B:
                 int personas3 = variosTramites.cantidadPersonas();
                 variosTramites.encolar(nuevo);
-
                 if (personas3 == 0 && !caja3Ocupada) {
                     JOptionPane.showMessageDialog(null,
                             "Caja 3\nEs su turno de atención.");
@@ -122,6 +125,58 @@ public class GestionTiquete {
                     JOptionPane.showMessageDialog(null,
                             "Caja 3\nPersonas delante: " + personas3);
                 }
+                break;
+        }
+    }
+    
+    public void atenderCliente(Tipo tipo) {
+
+        Cola colaCorrespondiente;
+
+        switch (tipo) {
+            case P:
+                colaCorrespondiente = preferencial;
+                break;
+            case A:
+                colaCorrespondiente = unTramite;
+                break;
+            case B:
+                colaCorrespondiente = variosTramites;
+                break;
+            default:
+                return;
+        }
+
+        if (colaCorrespondiente.esVacia()) {
+            JOptionPane.showMessageDialog(null, "No hay clientes esperando en esta cola.");
+            liberarCaja(tipo);
+            return;
+        }
+
+        Cliente atendido = colaCorrespondiente.getPrimero();
+        JOptionPane.showMessageDialog(null, "Atendiendo a: " + atendido.getNombre());
+
+        colaCorrespondiente.desencolar();
+
+        if (!colaCorrespondiente.esVacia()) {
+            Cliente siguiente = colaCorrespondiente.getPrimero();
+            JOptionPane.showMessageDialog(null,
+                    "Siguiente en fila: " + siguiente.getNombre() + "\nEs su turno de atención.");
+        } else {
+            liberarCaja(tipo);
+        }
+    }
+    
+    private void liberarCaja(Tipo tipo) {
+        switch (tipo) {
+            case P:
+                caja1Ocupada = false;
+                break;
+            case A:
+                caja2Ocupada = false;
+                break;
+            case B:
+                caja3Ocupada = false;
                 break;
         }
     }

@@ -9,7 +9,7 @@ package sc.pkg304_jn_proyecto;
  *@autores  Oscar Solis Barrientos, Jose Antonio Zeledon Sanchez, Javier Mora Jimenez
  */
 public enum Tramite {
-    Depositos,
-    Retiros,
-    CambiodeDivisas
+    DEPOSITOS,
+    RETIROS,
+    CAMBIO_DE_DIVISAS
 }
