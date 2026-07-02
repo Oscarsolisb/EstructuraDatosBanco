@@ -30,22 +30,27 @@ public class SC304_JN_Proyecto {
         valorBTN = JOptionPane.showOptionDialog(null, "----------------[  MENÚ INICIO DE BANCO  ]----------------\n¡Bienvenido al Sistema del Banco!\n¿Qué desea hacer?", "Seleccione",
         JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, new String[]{"CONFIGURACIÓN", "PRUEBA DE CONCEPTO", "ATENCIÓN DE CLIENTES", "SALIR"}, "ATENCIÓN DE CLIENTES");
         
-        switch (valorBTN) {                         
-            case 0:                                 
-                modulo0.ejecutarConfiguracionManual();
-                IniciarPrograma();
-                break;
-                
-            case 1:
-                MenuAtencionCliente();
-                break;
+        switch (valorBTN) {
+    case 0:
+        modulo0.ejecutarConfiguracionManual();
+        IniciarPrograma();
+        break;
 
-            case 2:
-                JOptionPane.showMessageDialog(null, "Gracias por usar el Sistema del Banco");  
-                break;
-                
-            default:
-                JOptionPane.showMessageDialog(null, "Finalizando proceso....");
+    case 1:
+        pruebaFecha.ejecutarPruebaConcepto();
+        IniciarPrograma();
+        break;
+
+    case 2:
+        MenuAtencionCliente();
+        break;
+
+    case 3:
+        JOptionPane.showMessageDialog(null, "Gracias por usar el Sistema del Banco");
+        break;
+
+    default:
+        JOptionPane.showMessageDialog(null, "Finalizando proceso....");
         }
     }
     
