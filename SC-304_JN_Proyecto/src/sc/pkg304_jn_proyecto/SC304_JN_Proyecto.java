@@ -13,12 +13,13 @@ import javax.swing.JOptionPane;
  */
 public class SC304_JN_Proyecto {
     
-    public static int cantidad = 0;                                 
+    public static int cantidad = 0;                                     
     private static ConfigurarModulo0 modulo0 = new ConfigurarModulo0();
     private static PruebaConceptoF pruebaFecha = new PruebaConceptoF();
+    private static LlenadoColas llenadoColas = new LlenadoColas();
+    private static GestionTiquete gestion = new GestionTiquete();
 
     public static void main(String[] args) {
-        GestionTiquete Gestion = new GestionTiquete();
         modulo0.ejecutarConfiguracionSilenciosa();
         IniciarPrograma();
         
@@ -59,13 +60,13 @@ public class SC304_JN_Proyecto {
 
         do {
             String respuesta = (JOptionPane.showInputDialog("""         
-                                _______MENÚ ATENCIÓN DE CLIENTE_______
-                                1. Creación de tiquetes\s
-                                2. Atención de tiquetes
-                                3. Llenado de Colas
-                                4. Reportes
-                                5. Salir\s
-                               \s"""));
+                                    _______MENÚ ATENCIÓN DE CLIENTE_______
+                                    1. Creación de tiquetes 
+                                    2. Atención de tiquetes
+                                    3. Llenado de Colas
+                                    4. Reportes
+                                    5. Salir 
+                                   """));
 
             if (respuesta == null) {                
                 IniciarPrograma();
@@ -81,7 +82,7 @@ public class SC304_JN_Proyecto {
                     JOptionPane.showMessageDialog(null, "Mostrar las opciones de Atencion de tiquetes");
                     break;
                 case 3: 
-                    JOptionPane.showMessageDialog(null, "Mostrar las opciones de Llenado de colas");
+                    llenadoColas.mostrarEstadoYAsignar(gestion.unTramite, gestion.variosTramites);
                     break;
                 case 4: 
                     JOptionPane.showMessageDialog(null, "Mostrando Reportes del sistema");
