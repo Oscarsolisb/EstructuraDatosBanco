@@ -78,8 +78,8 @@ public class SC304_JN_Proyecto {
                 case 1: 
                     JOptionPane.showMessageDialog(null, "Mostrar las opciones de Creacion de tiquetes");
                     break;
-                case 2: 
-                    JOptionPane.showMessageDialog(null, "Mostrar las opciones de Atencion de tiquetes");
+                case 2:
+                    gestion.menuAtencionTiquetes();
                     break;
                 case 3: 
                     llenadoColas.mostrarEstadoYAsignar(gestion.unTramite, gestion.variosTramites);

@@ -1,6 +1,8 @@
 
 package sc.pkg304_jn_proyecto;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import javax.swing.JOptionPane;
 
 
@@ -16,6 +18,8 @@ public class GestionTiquete {
     boolean caja1Ocupada = false;
     boolean caja2Ocupada = false;
     boolean caja3Ocupada = false;
+
+    private final Reportes reportes = new Reportes();
 
     public void creartiquete() {
 
@@ -129,44 +133,141 @@ public class GestionTiquete {
         }
     }
     
-    public void atenderCliente(Tipo tipo) {
+    // ---------------------------------------------------------------
+    //  MÓDULO 1.2 - ATENCIÓN DE TIQUETES
+    // ---------------------------------------------------------------
 
-        Cola colaCorrespondiente;
+    /**
+     * Menú del Módulo 1.2. El cajero indica el número de caja en la que se
+     * atendió un tiquete ("Tiquete atendido") para que el sistema pase a
+     * atender al siguiente cliente de esa cola.
+     */
+    public void menuAtencionTiquetes() {
+        int opcion = 0;
 
-        switch (tipo) {
-            case P:
-                colaCorrespondiente = preferencial;
+        do {
+            String respuesta = JOptionPane.showInputDialog(
+                    "----------------[ MÓDULO 1.2 - ATENCIÓN DE TIQUETES ]----------------\n"
+                    + "Seleccione la caja donde se atendió el tiquete:\n\n"
+                    + "1. Caja 1 (Preferencial)\n"
+                    + "2. Caja 2 (Un trámite)\n"
+                    + "3. Caja 3 (Varios trámites)\n"
+                    + "4. Ver estado de las cajas\n"
+                    + "5. Regresar");
+
+            if (respuesta == null) {
+                return;
+            }
+
+            try {
+                opcion = Integer.parseInt(respuesta);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Debe ingresar un número válido.");
+                continue;
+            }
+
+            switch (opcion) {
+                case 1:
+                    atenderTiquete(1);
+                    break;
+                case 2:
+                    atenderTiquete(2);
+                    break;
+                case 3:
+                    atenderTiquete(3);
+                    break;
+                case 4:
+                    mostrarEstadoCajas();
+                    break;
+                case 5:
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Opción inválida.");
+            }
+        } while (opcion != 5);
+    }
+
+    /**
+     * "Tiquete atendido": atiende al cliente que está al frente de la caja
+     * indicada. Le asigna la hora de atención del sistema, lo guarda en la
+     * base de datos de reportes, lo saca de la cola y asigna el siguiente
+     * cliente a la caja.
+     *
+     * @param numeroCaja 1 = Preferencial, 2 = Un trámite, 3 = Varios trámites
+     */
+    public void atenderTiquete(int numeroCaja) {
+        Cola cola;
+        Tipo tipo;
+
+        switch (numeroCaja) {
+            case 1:
+                cola = preferencial;
+                tipo = Tipo.P;
                 break;
-            case A:
-                colaCorrespondiente = unTramite;
+            case 2:
+                cola = unTramite;
+                tipo = Tipo.A;
                 break;
-            case B:
-                colaCorrespondiente = variosTramites;
+            case 3:
+                cola = variosTramites;
+                tipo = Tipo.B;
                 break;
             default:
+                JOptionPane.showMessageDialog(null, "Número de caja inválido.");
                 return;
         }
 
-        if (colaCorrespondiente.esVacia()) {
-            JOptionPane.showMessageDialog(null, "No hay clientes esperando en esta cola.");
+        if (cola.esVacia()) {
+            JOptionPane.showMessageDialog(null,
+                    "Caja " + numeroCaja + ": no hay clientes en la fila.");
             liberarCaja(tipo);
             return;
         }
 
-        Cliente atendido = colaCorrespondiente.getPrimero();
-        JOptionPane.showMessageDialog(null, "Atendiendo a: " + atendido.getNombre());
+        // El cliente del frente pasa a ser atendido:
+        Cliente atendido = cola.getPrimero();
+        atendido.setFechaAtendido(LocalDateTime.now());   // hora de atención del sistema
+        reportes.guardarAtencion(numeroCaja, atendido);   // se guarda en la BD de reportes
+        cola.desencolar();                                // el tiquete queda atendido
 
-        colaCorrespondiente.desencolar();
+        long minutosEspera = Duration.between(
+                atendido.getFechaCreacion(), atendido.getFechaAtendido()).toMinutes();
 
-        if (!colaCorrespondiente.esVacia()) {
-            Cliente siguiente = colaCorrespondiente.getPrimero();
+        JOptionPane.showMessageDialog(null,
+                "Caja " + numeroCaja + " — TIQUETE ATENDIDO\n"
+                + "Cliente: " + atendido.getNombre() + " (ID " + atendido.getId() + ")\n"
+                + "Trámite: " + atendido.getTramite() + "\n"
+                + "Hora de atención: " + atendido.getFechaAtendido() + "\n"
+                + "Tiempo de espera: " + minutosEspera + " min\n"
+                + "Guardado en la base de datos de reportes.");
+
+        // Se asigna el siguiente cliente de la cola a esta caja:
+        if (!cola.esVacia()) {
+            Cliente siguiente = cola.getPrimero();
             JOptionPane.showMessageDialog(null,
-                    "Siguiente en fila: " + siguiente.getNombre() + "\nEs su turno de atención.");
+                    "Caja " + numeroCaja + ": es el turno de " + siguiente.getNombre() + ".\n"
+                    + "Personas en fila detrás: " + (cola.cantidadPersonas() - 1));
         } else {
             liberarCaja(tipo);
+            JOptionPane.showMessageDialog(null,
+                    "Caja " + numeroCaja + ": no hay más clientes. La caja queda libre.");
         }
     }
-    
+
+    /**
+     * Muestra cuántas personas hay en cada cola y si la caja está ocupada.
+     */
+    public void mostrarEstadoCajas() {
+        JOptionPane.showMessageDialog(null,
+                "----------------[ ESTADO DE LAS CAJAS ]----------------\n"
+                + "Caja 1 (Preferencial):     " + preferencial.cantidadPersonas()
+                        + " en fila | " + (caja1Ocupada ? "Ocupada" : "Libre") + "\n"
+                + "Caja 2 (Un trámite):       " + unTramite.cantidadPersonas()
+                        + " en fila | " + (caja2Ocupada ? "Ocupada" : "Libre") + "\n"
+                + "Caja 3 (Varios trámites):  " + variosTramites.cantidadPersonas()
+                        + " en fila | " + (caja3Ocupada ? "Ocupada" : "Libre"));
+    }
+
     private void liberarCaja(Tipo tipo) {
         switch (tipo) {
             case P:
