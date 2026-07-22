@@ -11,15 +11,15 @@ import javax.swing.JOptionPane;
  */
 public class LlenadoColas {
 
-    public void mostrarEstadoYAsignar(Cola unTrámite, Cola variosTrámites) {
+    public void mostrarEstadoYAsignar(Cola unTrámite, Cola[] cajasTipoB) {
         int opcion = 0;
         
         do {
             String respuesta = JOptionPane.showInputDialog(
-                "----------------[ MÓDULO 1.3]----------------\n" +
-                "1. Ver estado actual de las colas\n" +
-                "2. Simular llegada de cliente (Un trámite - Caja 2)\n" +
-                "3. Simular llegada de cliente (Varios trámites - Caja 3)\n" +
+                "----------------[ MÓDULO 1.3: LLENADO DE COLAS ]----------------\n" +
+                "1. Ver estado actual de las colas y balanceo\n" +
+                "2. Simular llegada a Caja 2 (Un trámite - Tipo A)\n" +
+                "3. Simular llegada a Cajas Tipo B (Balanceo automático)\n" +
                 "4. Regresar al menú anterior"
             );
             
@@ -32,37 +32,48 @@ public class LlenadoColas {
             switch (opcion) {
                 case 1:
                     int personasCaja2 = unTrámite.cantidadPersonas();
-                    int personasCaja3 = variosTrámites.cantidadPersonas();
                     
-                    String resultado = "";
-                    if (personasCaja2 < personasCaja3) {
-                        resultado = "Resultado: La Caja 2 tiene menos personas. El próximo cliente se asignará a la Caja 2.";
-                    } else if (personasCaja3 < personasCaja2) {
-                        resultado = "Resultado: La Caja 3 tiene menos personas. El próximo cliente se asignará a la Caja 3.";
-                    } else {
-                        resultado = "Hay un empate en las filas. Se puede asignar a cualquiera de las dos cajas.";
+                    StringBuilder sb = new StringBuilder("ESTADO ACTUAL DE LAS COLAS Y BALANCEO\n");
+                    sb.append("Caja 1 (Preferencial): [Manejado por módulo preferencial]\n");
+                    sb.append("Caja 2 (Un solo trámite - Tipo A): ").append(personasCaja2).append(" personas en fila\n");
+                    
+                    int menorB = cajasTipoB[0].cantidadPersonas();
+                    int mejorCajaBIndex = 0;
+                    
+                    for (int i = 0; i < cajasTipoB.length; i++) {
+                        int cant = cajasTipoB[i].cantidadPersonas();
+                        sb.append("Caja ").append(3 + i).append(" (Tipo B - Caja ").append(i + 1).append("): ").append(cant).append(" personas en fila\n");
+                        if (cant < menorB) {
+                            menorB = cant;
+                            mejorCajaBIndex = i;
+                        }
                     }
                     
-                    JOptionPane.showMessageDialog(null, 
-                            "ESTADO ACTUAL DE LAS COLAS \n" +
-                            "Caja 1 (Preferencial): [Manejado por módulo preferencial]\n" +
-                            "Caja 2 (Un solo trámite - Tipo A): " + personasCaja2 + " personas en fila\n" +
-                            "Caja 3 (Dos o más trámites - Tipo B): " + personasCaja3 + " personas en fila\n\n" +
-                            "Regla de asignación: El sistema asigna automáticamente a la caja con menos personas.\n\n" +
-                            resultado
-                    );
+                    sb.append("\nRegla de asignación: Los tipo B se reparten eligiendo la caja B con menos gente.\n");
+                    sb.append("Resultado actual: La siguiente persona de Tipo B se asignará a la Caja ").append(3 + mejorCajaBIndex);
+                    
+                    JOptionPane.showMessageDialog(null, sb.toString());
                     break;
                     
                 case 2:
                     Cliente c2 = new Cliente("Cliente Prueba A", 111, 25, Tramite.DEPOSITOS, Tipo.A);
                     unTrámite.encolar(c2);
-                    JOptionPane.showMessageDialog(null, "¡Cliente agregado a la Caja 2 exitosamente!");
+                    JOptionPane.showMessageDialog(null, "¡Cliente agregado exitosamente a la Caja 2!");
                     break;
                     
                 case 3:
-                    Cliente c3 = new Cliente("Cliente Prueba B", 222, 30, Tramite.RETIROS, Tipo.B);
-                    variosTrámites.encolar(c3);
-                    JOptionPane.showMessageDialog(null, "¡Cliente agregado a la Caja 3 exitosamente!");
+                    // Simula el balanceo buscando la caja B con menos gente
+                    int idxMejor = 0;
+                    int minP = cajasTipoB[0].cantidadPersonas();
+                    for (int i = 1; i < cajasTipoB.length; i++) {
+                        if (cajasTipoB[i].cantidadPersonas() < minP) {
+                            minP = cajasTipoB[i].cantidadPersonas();
+                            idxMejor = i;
+                        }
+                    }
+                    Cliente cB = new Cliente("Cliente Prueba B", 222, 30, Tramite.RETIROS, Tipo.B);
+                    cajasTipoB[idxMejor].encolar(cB);
+                    JOptionPane.showMessageDialog(null, "¡Cliente Tipo B agregado exitosamente a la Caja " + (3 + idxMejor) + " (la de menor fila)!");
                     break;
                     
                 case 4:

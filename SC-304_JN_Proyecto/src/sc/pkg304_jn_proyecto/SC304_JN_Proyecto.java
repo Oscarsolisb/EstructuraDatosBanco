@@ -4,7 +4,7 @@ package sc.pkg304_jn_proyecto;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * 
  * 
  * Poner aca nombres
  * @autores  Oscar Solis Barrientos, Jose Antonio Zeledon Sanchez, Javier Mora Jimenez
@@ -66,7 +66,7 @@ public class SC304_JN_Proyecto {
                                     3. Llenado de Colas
                                     4. Reportes
                                     5. Salir 
-                                   """));
+                                    """));
 
             if (respuesta == null) {                
                 IniciarPrograma();
@@ -76,13 +76,14 @@ public class SC304_JN_Proyecto {
             
             switch (opt) {
                 case 1: 
-                    JOptionPane.showMessageDialog(null, "Mostrar las opciones de Creacion de tiquetes");
+                    gestion.creartiquete(); 
                     break;
                 case 2:
                     gestion.menuAtencionTiquetes();
                     break;
                 case 3: 
-                    llenadoColas.mostrarEstadoYAsignar(gestion.unTramite, gestion.variosTramites);
+                    
+                    llenadoColas.mostrarEstadoYAsignar(gestion.unTramite, gestion.cajasTipoB);
                     break;
                 case 4: 
                     JOptionPane.showMessageDialog(null, "Mostrando Reportes del sistema");
@@ -92,7 +93,7 @@ public class SC304_JN_Proyecto {
                     break;
                 default:
                     JOptionPane.showMessageDialog(null, "Ingrese un número válido");    
-            }    
+            }   
             
         } while (opt != 5);
     }
