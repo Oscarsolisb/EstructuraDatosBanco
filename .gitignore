@@ -1,0 +1,9 @@
+# === Compilados de NetBeans / Ant ===
+build/
+dist/
+
+# === Configuración local de NetBeans (por usuario, no se comparte) ===
+**/nbproject/private/
+
+# === Base de datos generada en tiempo de ejecución (Módulo 1.2 / 1.4) ===
+reportes.txt
