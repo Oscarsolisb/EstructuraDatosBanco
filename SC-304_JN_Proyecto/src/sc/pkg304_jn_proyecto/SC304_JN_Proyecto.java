@@ -18,11 +18,38 @@ public class SC304_JN_Proyecto {
     private static PruebaConceptoF pruebaFecha = new PruebaConceptoF();
     private static LlenadoColas llenadoColas = new LlenadoColas();
     private static GestionTiquete gestion = new GestionTiquete();
+    private static Login login = new Login();
+    
+    
+    
 
     public static void main(String[] args) {
-        modulo0.ejecutarConfiguracionSilenciosa();
-        IniciarPrograma();
+        //USUARIO 1 = admin, 1234
+        //USUARIO 2 = admin2, 5678
         
+        int intentosFallidos = 0;
+        final int intentoMax = 3;
+
+        while (true) {
+
+            if (login.login()) {
+                intentosFallidos = 0; // reinicia el contador si el logueo funcionó bien
+
+                modulo0.ejecutarConfiguracionSilenciosa();
+                IniciarPrograma();
+
+            } else {
+                intentosFallidos++;
+                if (intentosFallidos >= intentoMax) {
+
+                    JOptionPane.showMessageDialog(null, "Demasiados intentos fallidos. Cerrando programa.");
+                    System.out.println("Demasiados intentos fallidos. Cerrando programa.");
+                    break;
+                }
+            }
+
+        }
+
     }
     
     public static void IniciarPrograma() {
