@@ -27,25 +27,20 @@ public class SC304_JN_Proyecto {
         //USUARIO 1 = admin, 1234
         //USUARIO 2 = admin2, 5678
         
-        int intentosFallidos = 0;
-        final int intentoMax = 3;
+       
 
         while (true) {
 
             if (login.login()) {
-                intentosFallidos = 0; // reinicia el contador si el logueo funcionó bien
+                
 
                 modulo0.ejecutarConfiguracionSilenciosa();
                 IniciarPrograma();
 
             } else {
-                intentosFallidos++;
-                if (intentosFallidos >= intentoMax) {
-
-                    JOptionPane.showMessageDialog(null, "Demasiados intentos fallidos. Cerrando programa.");
-                    System.out.println("Demasiados intentos fallidos. Cerrando programa.");
-                    break;
-                }
+                
+                
+                break;
             }
 
         }
@@ -79,6 +74,7 @@ public class SC304_JN_Proyecto {
 
     default:
         JOptionPane.showMessageDialog(null, "Finalizando proceso....");
+        
         }
     }
     
@@ -117,7 +113,7 @@ public class SC304_JN_Proyecto {
                     break;
                 case 5: 
                     IniciarPrograma();
-                    break;
+                    return;
                 default:
                     JOptionPane.showMessageDialog(null, "Ingrese un número válido");    
             }   

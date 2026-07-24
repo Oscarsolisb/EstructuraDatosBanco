@@ -21,16 +21,19 @@ public class GestionTiquete {
 
     private final Reportes reportes = new Reportes();
 
+    
+    
+    //se utilizar return en la condicion para que no crashee 
     public void creartiquete() {
         String nombre = JOptionPane.showInputDialog("Digite el nombre:");
-        if (nombre == null) { SC304_JN_Proyecto.MenuAtencionCliente(); }
+        if (nombre == null) { return; }
 
         String idStr = JOptionPane.showInputDialog("Digite el ID:");
-        if (idStr == null) { SC304_JN_Proyecto.MenuAtencionCliente(); }
+        if (idStr == null) { return; }
         int id = Integer.parseInt(idStr);
 
         String edadStr = JOptionPane.showInputDialog("Digite la edad:");
-        if (edadStr == null) { SC304_JN_Proyecto.MenuAtencionCliente(); }
+        if (edadStr == null) { return; }
         int edad = Integer.parseInt(edadStr);
 
         String optTramiteStr = JOptionPane.showInputDialog(
@@ -249,18 +252,36 @@ public class GestionTiquete {
     }
 
     public void mostrarEstadoCajas() {
-        StringBuilder sb = new StringBuilder("----------------[ ESTADO DE LAS CAJAS ]----------------\n");
-        sb.append("Caja 1 (Preferencial):     ").append(preferencial.cantidadPersonas()).append(" en fila | ").append(caja1Ocupada ? "Ocupada" : "Libre").append("\n");
-        sb.append("Caja 2 (Un trámite):       ").append(unTramite.cantidadPersonas()).append(" en fila | ").append(caja2Ocupada ? "Ocupada" : "Libre").append("\n");
-        
+        String sb = "----------------[ ESTADO DE LAS CAJAS ]----------------\n";
+        String estadoCaja1;
+        if (caja1Ocupada) {
+            estadoCaja1 = "Ocupada";
+        } else {
+            estadoCaja1 = "Libre";
+        }
+        sb += "Caja 1 (Preferencial):     " + preferencial.cantidadPersonas() + " en fila | " + estadoCaja1 + "\n";
+
+        String estadoCaja2;
+        if (caja2Ocupada) {
+            estadoCaja2 = "Ocupada";
+        } else {
+            estadoCaja2 = "Libre";
+        }
+        sb += "Caja 2 (Un trámite):       " + unTramite.cantidadPersonas() + " en fila | " + estadoCaja2 + "\n";
+
         for (int i = 0; i < cajasTipoB.length; i++) {
             int numCaja = 3 + i;
-            sb.append("Caja ").append(numCaja).append(" (Tipo B - ").append(i + 1).append("): ").append(cajasTipoB[i].cantidadPersonas()).append(" en fila | ").append(cajasBOcupadas[i] ? "Ocupada" : "Libre").append("\n");
+            String estadoCajaB;
+            if (cajasBOcupadas[i]) {
+                estadoCajaB = "Ocupada";
+            } else {
+                estadoCajaB = "Libre";
+            }
+            sb += "Caja " + numCaja + " (Tipo B - " + (i + 1) + "): " + cajasTipoB[i].cantidadPersonas() + " en fila | " + estadoCajaB + "\n";
         }
 
-        JOptionPane.showMessageDialog(null, sb.toString());
+        JOptionPane.showMessageDialog(null, sb);
     }
-
     private void liberarCajaEspecifica(int numeroCaja, Tipo tipo, int indiceB) {
         switch (tipo) {
             case P:
