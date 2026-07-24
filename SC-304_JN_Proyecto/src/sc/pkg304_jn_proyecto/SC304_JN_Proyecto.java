@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
  * 
  * 
  * Poner aca nombres
- * @autores  Oscar Solis Barrientos, Jose Antonio Zeledon Sanchez, Javier Mora Jimenez
+ * @autores  Oscar Solis Barrientos, Jose Antonio Zeledon Sanchez, Javier Mora Jimenez, Kevin Ruíz
  * 
  * 
  */

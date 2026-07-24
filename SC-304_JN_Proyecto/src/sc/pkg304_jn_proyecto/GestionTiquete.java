@@ -23,14 +23,14 @@ public class GestionTiquete {
 
     public void creartiquete() {
         String nombre = JOptionPane.showInputDialog("Digite el nombre:");
-        if (nombre == null) { return; }
+        if (nombre == null) { SC304_JN_Proyecto.MenuAtencionCliente(); }
 
         String idStr = JOptionPane.showInputDialog("Digite el ID:");
-        if (idStr == null) { return; }
+        if (idStr == null) { SC304_JN_Proyecto.MenuAtencionCliente(); }
         int id = Integer.parseInt(idStr);
 
         String edadStr = JOptionPane.showInputDialog("Digite la edad:");
-        if (edadStr == null) { return; }
+        if (edadStr == null) { SC304_JN_Proyecto.MenuAtencionCliente(); }
         int edad = Integer.parseInt(edadStr);
 
         String optTramiteStr = JOptionPane.showInputDialog(

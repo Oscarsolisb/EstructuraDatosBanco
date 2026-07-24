@@ -23,6 +23,7 @@ public class PruebaConceptoF {
         );
 
         int anio = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el año de la fecha a comparar:"));
+        
         int mes = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el mes de la fecha a comparar:"));
         int dia = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el día de la fecha a comparar:"));
         int hora = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la hora de la fecha a comparar:"));
