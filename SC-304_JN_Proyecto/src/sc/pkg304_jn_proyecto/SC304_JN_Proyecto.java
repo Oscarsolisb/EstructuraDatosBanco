@@ -5,24 +5,21 @@ import javax.swing.JOptionPane;
 
 /**
  * 
- * 
- * Poner aca nombres
  * @autores  Oscar Solis Barrientos, Jose Antonio Zeledon Sanchez, Javier Mora Jimenez
- * 
  * 
  */
 public class SC304_JN_Proyecto {
     
-    public static int cantidad = 0;                                     
+    public static int cantidad = 0;                                       
     private static ConfigurarModulo0 modulo0 = new ConfigurarModulo0();
     private static PruebaConceptoF pruebaFecha = new PruebaConceptoF();
     private static LlenadoColas llenadoColas = new LlenadoColas();
     private static GestionTiquete gestion = new GestionTiquete();
+    private static Reportes reportes = new Reportes(); 
 
     public static void main(String[] args) {
         modulo0.ejecutarConfiguracionSilenciosa();
         IniciarPrograma();
-        
     }
     
     public static void IniciarPrograma() {
@@ -32,26 +29,26 @@ public class SC304_JN_Proyecto {
         JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, new String[]{"CONFIGURACIÓN", "PRUEBA DE CONCEPTO", "ATENCIÓN DE CLIENTES", "SALIR"}, "ATENCIÓN DE CLIENTES");
         
         switch (valorBTN) {
-    case 0:
-        modulo0.ejecutarConfiguracionManual();
-        IniciarPrograma();
-        break;
+            case 0:
+                modulo0.ejecutarConfiguracionManual();
+                IniciarPrograma();
+                break;
 
-    case 1:
-        pruebaFecha.ejecutarPruebaConcepto();
-        IniciarPrograma();
-        break;
+            case 1:
+                pruebaFecha.ejecutarPruebaConcepto();
+                IniciarPrograma();
+                break;
 
-    case 2:
-        MenuAtencionCliente();
-        break;
+            case 2:
+                MenuAtencionCliente();
+                break;
 
-    case 3:
-        JOptionPane.showMessageDialog(null, "Gracias por usar el Sistema del Banco");
-        break;
+            case 3:
+                JOptionPane.showMessageDialog(null, "Gracias por usar el Sistema del Banco");
+                break;
 
-    default:
-        JOptionPane.showMessageDialog(null, "Finalizando proceso....");
+            default:
+                JOptionPane.showMessageDialog(null, "Finalizando proceso....");
         }
     }
     
@@ -82,11 +79,10 @@ public class SC304_JN_Proyecto {
                     gestion.menuAtencionTiquetes();
                     break;
                 case 3: 
-                    
                     llenadoColas.mostrarEstadoYAsignar(gestion.unTramite, gestion.cajasTipoB);
                     break;
                 case 4: 
-                    JOptionPane.showMessageDialog(null, "Mostrando Reportes del sistema");
+                    reportes.mostrarReportePersona1(); // <--- 2. Llama al método de tu reporte
                     break;
                 case 5: 
                     IniciarPrograma();
