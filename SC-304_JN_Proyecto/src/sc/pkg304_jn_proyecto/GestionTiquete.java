@@ -21,9 +21,19 @@ public class GestionTiquete {
 
     private final Reportes reportes = new Reportes();
 
-    
-    
-    //se utilizar return en la condicion para que no crashee 
+    public void inicializarCajasB(int cantidadCajas) {
+        int cantidadB = cantidadCajas - 2;
+        if (cantidadB < 2) {
+            cantidadB = 2;
+        }
+        cajasTipoB = new Cola[cantidadB];
+        cajasBOcupadas = new boolean[cantidadB];
+        for (int i = 0; i < cantidadB; i++) {
+            cajasTipoB[i] = new Cola();
+        }
+    }
+
+    //se utilizar return en la condicion para que no crashee
     public void creartiquete() {
         String nombre = JOptionPane.showInputDialog("Digite el nombre:");
         if (nombre == null) { return; }
@@ -148,18 +158,24 @@ public class GestionTiquete {
     }
     
     public void menuAtencionTiquetes() {
+        int totalCajas = 2 + cajasTipoB.length;
+        int opcionEstado = totalCajas + 1;
+        int opcionRegresar = totalCajas + 2;
         int opcion = 0;
 
         do {
-            String respuesta = JOptionPane.showInputDialog(
-                    "----------------[ MÓDULO 1.2 - ATENCIÓN DE TIQUETES ]----------------\n"
+            String menu = "----------------[ MÓDULO 1.2 - ATENCIÓN DE TIQUETES ]----------------\n"
                     + "Seleccione la caja donde se atendió el tiquete:\n\n"
                     + "1. Caja 1 (Preferencial)\n"
-                    + "2. Caja 2 (Un trámite)\n"
-                    + "3. Caja 3 (Tipo B - 1)\n"
-                    + "4. Caja 4 (Tipo B - 2)\n"
-                    + "5. Ver estado de las cajas\n"
-                    + "6. Regresar");
+                    + "2. Caja 2 (Un trámite)\n";
+            for (int i = 0; i < cajasTipoB.length; i++) {
+                int numeroCaja = 3 + i;
+                menu += numeroCaja + ". Caja " + numeroCaja + " (Tipo B - " + (i + 1) + ")\n";
+            }
+            menu += opcionEstado + ". Ver estado de las cajas\n";
+            menu += opcionRegresar + ". Regresar";
+
+            String respuesta = JOptionPane.showInputDialog(menu);
 
             if (respuesta == null) {
                 return;
@@ -172,28 +188,14 @@ public class GestionTiquete {
                 continue;
             }
 
-            switch (opcion) {
-                case 1:
-                    atenderTiquete(1);
-                    break;
-                case 2:
-                    atenderTiquete(2);
-                    break;
-                case 3:
-                    atenderTiquete(3); // Caja 3 (Índice 0 de B)
-                    break;
-                case 4:
-                    atenderTiquete(4); // Caja 4 (Índice 1 de B)
-                    break;
-                case 5:
-                    mostrarEstadoCajas();
-                    break;
-                case 6:
-                    break;
-                default:
-                    JOptionPane.showMessageDialog(null, "Opción inválida.");
+            if (opcion >= 1 && opcion <= totalCajas) {
+                atenderTiquete(opcion);
+            } else if (opcion == opcionEstado) {
+                mostrarEstadoCajas();
+            } else if (opcion != opcionRegresar) {
+                JOptionPane.showMessageDialog(null, "Opción inválida.");
             }
-        } while (opcion != 6);
+        } while (opcion != opcionRegresar);
     }
 
     public void atenderTiquete(int numeroCaja) {

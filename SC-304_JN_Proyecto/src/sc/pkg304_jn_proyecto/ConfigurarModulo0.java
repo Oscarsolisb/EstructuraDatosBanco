@@ -31,7 +31,7 @@ public class ConfigurarModulo0 {
         }
     }
 
-    public void ejecutarConfiguracionManual() {
+    public boolean ejecutarConfiguracionManual() {
         File archivo = new File("prod.txt");
 
         if (archivo.exists()) {
@@ -42,9 +42,11 @@ public class ConfigurarModulo0 {
                     + "- 1 Caja Preferencial (Tipo P)\n"
                     + "- 1 Caja de Trámites Rápidos (Tipo A)\n"
                     + "- " + (cantidadCajas - 2) + " Cajas Normales (Tipo B)");
+            return false;
         } else {
             JOptionPane.showMessageDialog(null, "Iniciando: Configuración Inicial del Sistema Bancario...");
             pedirDatosNuevos();
+            return true;
         }
     }
 
@@ -56,13 +58,13 @@ public class ConfigurarModulo0 {
 
         boolean cantidadValida = false;
         while (!cantidadValida) {
-            String lecturaCajas = JOptionPane.showInputDialog("Ingrese la cantidad de cajas de atención (Mínimo 3):");
+            String lecturaCajas = JOptionPane.showInputDialog("Ingrese la cantidad de cajas de atención (Mínimo 4):");
             try {
                 cantidadCajas = Integer.parseInt(lecturaCajas);
-                if (cantidadCajas >= 3) {
+                if (cantidadCajas >= 4) {
                     cantidadValida = true;
                 } else {
-                    JOptionPane.showMessageDialog(null, "Error: El mínimo de cajas permitido es 3.");
+                    JOptionPane.showMessageDialog(null, "Error: El mínimo de cajas permitido es 4.");
                 }
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Error: Debe ingresar un número entero válido.");

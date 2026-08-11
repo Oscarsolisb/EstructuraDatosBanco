@@ -15,11 +15,23 @@ public class SC304_JN_Proyecto {
     private static PruebaConceptoF pruebaFecha = new PruebaConceptoF();
     private static LlenadoColas llenadoColas = new LlenadoColas();
     private static GestionTiquete gestion = new GestionTiquete();
-    private static Reportes reportes = new Reportes(); 
+    private static Reportes reportes = new Reportes();
+    private static Login login = new Login();
 
     public static void main(String[] args) {
-        modulo0.ejecutarConfiguracionSilenciosa();
-        IniciarPrograma();
+        int intentosFallidos = 0;
+        final int intentoMax = 3;
+
+        while (intentosFallidos < intentoMax) {
+            if (login.login()) {
+                modulo0.ejecutarConfiguracionSilenciosa();
+                gestion.inicializarCajasB(modulo0.getCantidadCajas());
+                IniciarPrograma();
+                return;
+            }
+            intentosFallidos++;
+        }
+        JOptionPane.showMessageDialog(null, "Demasiados intentos fallidos. Cerrando programa.");
     }
     
     public static void IniciarPrograma() {
@@ -30,7 +42,9 @@ public class SC304_JN_Proyecto {
         
         switch (valorBTN) {
             case 0:
-                modulo0.ejecutarConfiguracionManual();
+                if (modulo0.ejecutarConfiguracionManual()) {
+                    gestion.inicializarCajasB(modulo0.getCantidadCajas());
+                }
                 IniciarPrograma();
                 break;
 
@@ -81,8 +95,9 @@ public class SC304_JN_Proyecto {
                 case 3: 
                     llenadoColas.mostrarEstadoYAsignar(gestion.unTramite, gestion.cajasTipoB);
                     break;
-                case 4: 
-                    reportes.mostrarReportePersona1(); // <--- 2. Llama al método de tu reporte
+                case 4:
+                    reportes.mostrarReportePersona1();
+                    reportes.mostrarReportePersona2();
                     break;
                 case 5: 
                     IniciarPrograma();
