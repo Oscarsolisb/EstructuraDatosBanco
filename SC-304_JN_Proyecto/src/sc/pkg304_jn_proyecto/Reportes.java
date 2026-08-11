@@ -1,5 +1,8 @@
 package sc.pkg304_jn_proyecto;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import javax.swing.JOptionPane;
@@ -45,5 +48,66 @@ public class Reportes {
             JOptionPane.showMessageDialog(null,
                     "Error: no se pudo guardar la atención en la base de datos de reportes.");
         }
+    }
+
+    
+    public void mostrarReportePersona1() {
+        File archivo = new File(ARCHIVO);
+
+        if (!archivo.exists()) {
+            JOptionPane.showMessageDialog(null, "No hay datos registrados en el archivo de reportes aún.");
+            return;
+        }
+
+        int totalClientes = 0;
+        int[] conteoCajas = new int[10];
+
+        try {
+            FileReader fr = new FileReader(archivo);
+            BufferedReader br = new BufferedReader(fr);
+            String linea;
+
+            while ((linea = br.readLine()) != null) {
+                if (!linea.trim().isEmpty()) {
+                    String[] datos = linea.split(";");
+                    int numCaja = Integer.parseInt(datos[0]); 
+
+                    totalClientes++; 
+
+                    if (numCaja < conteoCajas.length) {
+                        conteoCajas[numCaja]++; 
+                    }
+                }
+            }
+            br.close();
+            fr.close();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo de reportes.");
+            return;
+        }
+
+        if (totalClientes == 0) {
+            JOptionPane.showMessageDialog(null, "El archivo está vacío, no hay clientes atendidos.");
+            return;
+        }
+
+        
+        int cajaMayor = 0;
+        int maxClientes = -1;
+
+        for (int i = 1; i < conteoCajas.length; i++) {
+            if (conteoCajas[i] > maxClientes) {
+                maxClientes = conteoCajas[i];
+                cajaMayor = i;
+            }
+        }
+
+        
+        String mensaje = "---------  REPORTES ---------\n\n"
+                + " Total de clientes atendidos: " + totalClientes + "\n"
+                + " Caja con mayor cantidad de atenciones: Caja " + cajaMayor + " (" + maxClientes + " clientes)";
+
+        JOptionPane.showMessageDialog(null, mensaje);
     }
 }
